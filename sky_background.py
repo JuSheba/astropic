@@ -1,8 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.colors import LogNorm
 from mpl_events import MplEventDispatcher, mpl
+
 from polyfit2d import polyfit2d
 from zscale import zscale
 
@@ -52,14 +53,14 @@ def selectRegionsAndInterpolate(data, sample, k, v=None):
     else:
         vmin, vmax = v
     im = ax.imshow(data, cmap=plt.cm.bone, origin='lower',
-                   norm=LogNorm(vmin=vmin, vmax=vmax),)
+                   norm=LogNorm(vmin=vmin, vmax=vmax), )
     ax.set_title("Select Regions And Interpolate")
     cbar = ax.figure.colorbar(im, ax=ax)
     cbar.ax.set_ylabel('value', rotation=-90, va="bottom")
     plt.show()
     kx, ky = k
     res = polyfit2d(disp.regionsList, data, kx=kx, ky=ky)[0]
-    return res.reshape((kx+1, ky+1))
+    return res.reshape((kx + 1, ky + 1))
 
 
 def getSkyBackground(data, sample=10, k=(1, 1)):
@@ -70,7 +71,7 @@ def getSkyBackground(data, sample=10, k=(1, 1)):
     x, y = np.meshgrid(x, y)
     sky = np.zeros_like(x)
     for index, (j, i) in enumerate(np.ndindex(poly.shape)):
-        sky = sky + poly[i, j] * x**i * y**j
+        sky = sky + poly[i, j] * x ** i * y ** j
     # alternative way:
     # fitted_surf = np.polynomial.polynomial.polyval2d(x, y, poly)
     return sky

@@ -1,8 +1,9 @@
 import pathlib as pl
-import numpy as np
+
 import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
+import numpy as np
 from astropy.io import fits
+from matplotlib.colors import LogNorm
 
 import sky_background as skyb
 from zscale import zscale
@@ -29,11 +30,11 @@ GAL_NAME = 'EON_56.401_-7.472'
 def show(data):
     yLen, xLen = data.shape
     fig, ax = plt.subplots()
-    vmin = max(0.001,np.mean(data) - 3*np.std(data))
-    vmax = max(0.001,np.mean(data) + 3*np.std(data))
+    vmin = max(0.001, np.mean(data) - 3 * np.std(data))
+    vmax = max(0.001, np.mean(data) + 3 * np.std(data))
     vmin, vmax = zscale(data)
     im = ax.imshow(data, cmap=plt.cm.bone, origin='lower',
-                   norm=LogNorm(vmin=vmin, vmax=vmax),)
+                   norm=LogNorm(vmin=vmin, vmax=vmax), )
     ax.set_title("Show")
     cbar = ax.figure.colorbar(im, ax=ax)
     cbar.ax.set_ylabel('value', rotation=-90, va="bottom")
@@ -67,14 +68,14 @@ def get_galdata_fltrs(gal_data):
     :return: Data with surface brightness for each filter
     :rtype: numpy 2d array
     """
-    gal_data_g = gal_data[0,:,:]
-    gal_data_r = gal_data[1,:,:]
-    gal_data_z = gal_data[2,:,:]
+    gal_data_g = gal_data[0, :, :]
+    gal_data_r = gal_data[1, :, :]
+    gal_data_z = gal_data[2, :, :]
     return gal_data_g, gal_data_r, gal_data_z
 
 
 def get_keys_filters(gal_data_g, gal_data_r, gal_data_z):
-    keys_filters={
+    keys_filters = {
         "g": gal_data_g,
         "r": gal_data_r,
         "z": gal_data_z
@@ -133,7 +134,7 @@ def convert_magnitudes(gal_data, zero_points, photo_filter):
     :return: Data in magnitudes for one filter
     :rtype: numpy 2d array
     """
-    gal_data = zero_points[photo_filter] - 2.5*np.log10(gal_data)
+    gal_data = zero_points[photo_filter] - 2.5 * np.log10(gal_data)
     return gal_data
 
 
@@ -150,7 +151,7 @@ def minus_absorption(gal_data, absorp_coefs, photo_filter, zenith_angle):
     :return: Data in magnitudes for one filter
     :rtype: numpy 2d array
     """
-    gal_data = gal_data - absorp_coefs[photo_filter] / np.cos(zenith_angle*np.pi/180)
+    gal_data = gal_data - absorp_coefs[photo_filter] / np.cos(zenith_angle * np.pi / 180)
     return gal_data
 
 
@@ -168,7 +169,7 @@ def remove_nans(gal_data, zero_points, photo_filter):
     :rtype: numpy 2d array
     """
     gal_data = np.nan_to_num(gal_data, copy=False, nan=zero_points[photo_filter],
-    posinf=None, neginf=None)
+                             posinf=None, neginf=None)
     return gal_data
 
 
@@ -176,13 +177,14 @@ def show_isophots(data, v=(22, 16.5), limits=(16.5, 22), count=15):
     fig, ax = plt.subplots()
     vmin, vmax = v
     im = ax.imshow(data, cmap=plt.cm.bone, origin='lower',
-                   norm=LogNorm(vmin=vmin, vmax=vmax),)
+                   norm=LogNorm(vmin=vmin, vmax=vmax), )
     ax.set_title("Show Isophots")
     cbar = ax.figure.colorbar(im, ax=ax)
     cbar.ax.set_ylabel('value', rotation=-90, va="bottom")
     ax.contour(data, levels=np.linspace(
         limits[0], limits[1], count), colors='black', alpha=0.5)
     plt.show()
+
 
 def main():
     gal_data = get_gal_data(GAL_NAME)

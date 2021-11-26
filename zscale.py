@@ -1,4 +1,5 @@
 import math
+
 import numpy
 
 MAX_REJECT = 0.5
@@ -76,7 +77,7 @@ def zsc_fit_line(samples, npix, krej, ngrow, maxiter):
     xnorm = xnorm * xscale - 1.0
 
     ngoodpix = npix
-    minpix = max(MIN_NPIXELS, int(npix*MAX_REJECT))
+    minpix = max(MIN_NPIXELS, int(npix * MAX_REJECT))
     last_ngoodpix = npix + 1
 
     # This is the mask used in k-sigma clipping.  0 is good, 1 is bad
@@ -91,8 +92,8 @@ def zsc_fit_line(samples, npix, krej, ngrow, maxiter):
         # Accumulate sums to calculate straight line fit
         goodpixels = numpy.where(badpix == GOOD_PIXEL)
         sumx = xnorm[goodpixels].sum()
-        sumxx = (xnorm[goodpixels]*xnorm[goodpixels]).sum()
-        sumxy = (xnorm[goodpixels]*samples[goodpixels]).sum()
+        sumxx = (xnorm[goodpixels] * xnorm[goodpixels]).sum()
+        sumxy = (xnorm[goodpixels] * samples[goodpixels]).sum()
         sumy = samples[goodpixels].sum()
         sum = len(goodpixels[0])
 
@@ -102,7 +103,7 @@ def zsc_fit_line(samples, npix, krej, ngrow, maxiter):
         slope = (sum * sumxy - sumx * sumy) / delta
 
         # Subtract fitted line from the data array
-        fitted = xnorm*slope + intercept
+        fitted = xnorm * slope + intercept
         flat = samples - fitted
 
         # Compute the k-sigma rejection threshold
@@ -142,7 +143,7 @@ def zsc_compute_sigma(flat, badpix, npix):
     # Accumulate sum and sum of squares
     goodpixels = numpy.where(badpix == GOOD_PIXEL)
     sumz = flat[goodpixels].sum()
-    sumsq = (flat[goodpixels]*flat[goodpixels]).sum()
+    sumsq = (flat[goodpixels] * flat[goodpixels]).sum()
     ngoodpix = len(goodpixels[0])
     if ngoodpix == 0:
         mean = None
@@ -152,7 +153,7 @@ def zsc_compute_sigma(flat, badpix, npix):
         sigma = None
     else:
         mean = sumz / ngoodpix
-        temp = sumsq / (ngoodpix - 1) - sumz*sumz / (ngoodpix * (ngoodpix - 1))
+        temp = sumsq / (ngoodpix - 1) - sumz * sumz / (ngoodpix * (ngoodpix - 1))
         if temp < 0:
             sigma = 0.0
         else:
