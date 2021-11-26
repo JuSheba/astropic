@@ -4,8 +4,8 @@ import numpy as np
 from matplotlib.colors import LogNorm
 from mpl_events import MplEventDispatcher, mpl
 
-from polyfit2d import polyfit2d
-from zscale import zscale
+from lib.polyfit2d import polyfit2d
+from lib.zscale import zscale
 
 
 def getGoodOrderedRegion(region):
