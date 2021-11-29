@@ -50,7 +50,7 @@ def polyfit2d(regionsList, data, kx, ky, order=None):
     y = np.array(y)
 
     # coefficient array, up to x^kx, y^ky
-    coeffs = np.ones((kx+1, ky+1))
+    coeffs = np.ones((kx + 1, ky + 1))
 
     # solve array
     a = np.zeros((coeffs.size, x.size))
@@ -61,7 +61,7 @@ def polyfit2d(regionsList, data, kx, ky, order=None):
         if order is not None and i + j > order:
             arr = np.zeros_like(x)
         else:
-            arr = coeffs[i, j] * x**i * y**j
+            arr = coeffs[i, j] * x ** i * y ** j
         a[index] = arr
 
     # do leastsq fitting and return leastsq result
